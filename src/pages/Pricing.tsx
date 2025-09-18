@@ -46,33 +46,39 @@ export default function Pricing() {
       {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4">
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate('/')}
-            className="mb-4 text-forest hover:text-forest-dark hover:bg-forest/5"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Search
-          </Button>
-          
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-forest-dark">Compare Prices</h1>
-              <div className="flex items-center gap-4 text-forest/70 mt-2">
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-5 w-5" />
-                  {selectedDestination}
-                </div>
-                <div className="w-px h-4 bg-forest/20"></div>
-                <div className="flex items-center gap-2">
-                  <Users className="h-5 w-5" />
-                  {selectedSeats} seat{selectedSeats > 1 ? 's' : ''}
-                </div>
-              </div>
+          <div className="flex items-center gap-6 text-forest/70">
+            <Button 
+              variant="ghost" 
+              onClick={() => navigate('/')}
+              className="text-forest hover:text-forest-dark hover:bg-forest/5"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Search
+            </Button>
+
+            <div className="h-5 w-px bg-forest/20"></div>
+            
+            {/* <h1 className="text-xl font-bold text-forest-dark">Compare Prices</h1> */}
+            
+            {/* <div className="h-5 w-px bg-forest/20"></div> */}
+
+            <div className="flex items-center gap-2">
+              <MapPin className="h-5 w-5" />
+              {selectedDestination}
             </div>
-            <Badge className="bg-forest/10 text-forest hover:bg-forest/20 transition-colors py-2 px-4">
-              Total: {selectedSeats} × Price per seat
-            </Badge>
+
+            <div className="h-5 w-px bg-forest/20"></div>
+
+            <div className="flex items-center gap-2">
+              <Users className="h-5 w-5" />
+              {selectedSeats} seat{selectedSeats > 1 ? 's' : ''}
+            </div>
+
+            <div className="ml-auto">
+              <Badge className="bg-forest/10 text-forest hover:bg-forest/20 transition-colors py-2 px-4">
+                Total: {selectedSeats} × Price per seat
+              </Badge>
+            </div>
           </div>
         </div>
       </header>

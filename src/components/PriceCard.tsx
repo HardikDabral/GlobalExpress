@@ -63,7 +63,7 @@ export function PriceCard({ platform, price, isPopular, onSelect }: PriceCardPro
       whileHover={{ y: -4, scale: 1.01 }}
       className="relative"
     >
-      <Card className="relative p-6 bg-white border border-gray-100 hover:border-forest/20 transition-all duration-500 cursor-pointer group rounded-2xl overflow-hidden">
+      <Card className="relative p-6 bg-white border border-gray-100 hover:border-forest/20 transition-all duration-500 cursor-pointer group rounded-2xl">
         {/* Background decoration */}
         <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,black_70%,transparent_100%)] opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
         
@@ -73,7 +73,7 @@ export function PriceCard({ platform, price, isPopular, onSelect }: PriceCardPro
             animate={{ scale: 1 }}
             transition={{ type: "spring", delay: 0.3 }}
           >
-            <Badge className="absolute -top-2.5 left-1/2 transform -translate-x-1/2 bg-forest/10 text-forest text-xs border-0 px-3 py-1 rounded-full font-medium">
+            <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-forest/10 text-forest text-xs border-0 px-3 py-1 rounded-full font-medium">
               Most Popular
             </Badge>
           </motion.div>
