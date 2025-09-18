@@ -17,21 +17,21 @@ const getPlatformConfig = (platform: string) => {
       return {
         gradient: 'bg-gradient-makemytrip',
         logo: '✈️',
-        icon: <Sparkles className="h-12 w-12 text-white" />,
+        icon: <Sparkles className="h-12 w-12" />,
         features: ['24/7 Premium Support', 'Easy Cancellation', 'Instant Refund', 'Travel Insurance']
       };
     case 'redbus':
       return {
         gradient: 'bg-gradient-redbus',
         logo: '🚌',
-        icon: <Star className="h-12 w-12 text-white" />,
+        icon: <Star className="h-12 w-12" />,
         features: ['Live Bus Tracking', 'Premium Seats', 'Flexible Booking', 'Mobile Tickets']
       };
     case 'ixigo':
       return {
         gradient: 'bg-gradient-ixigo',
         logo: '🎯',
-        icon: <Check className="h-12 w-12 text-white" />,
+        icon: <Check className="h-12 w-12" />,
         features: ['Best Price Guarantee', 'Quick Booking', 'Travel Insurance', 'Reward Points']
       };
     case 'own':
@@ -45,8 +45,8 @@ const getPlatformConfig = (platform: string) => {
       return {
         gradient: 'bg-gradient-primary',
         logo: '🚌',
-        icon: <Star className="h-12 w-12 text-white" />,
-        features: ['Standard Service', 'Reliable Journey', 'Affordable Rates', 'Safe Travel']
+        icon: <Star className="h-12 w-12" />,
+        features: ['Direct Booking', 'Zero Extra Fees', 'Premium Service', 'VIP Support']
       };
   }
 };
@@ -60,13 +60,12 @@ export function PriceCard({ platform, price, isPopular, onSelect }: PriceCardPro
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
-      whileHover={{ y: -8, scale: 1.02 }}
+      whileHover={{ y: -4, scale: 1.01 }}
       className="relative"
     >
-      <Card className={`relative p-8 ${config.gradient} text-white border-0 shadow-premium-lg hover:shadow-premium-xl transition-all duration-500 cursor-pointer group rounded-3xl overflow-hidden`}>
+      <Card className="relative p-6 bg-white border border-gray-100 hover:border-forest/20 transition-all duration-500 cursor-pointer group rounded-2xl overflow-hidden">
         {/* Background decoration */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl transform translate-x-16 -translate-y-16"></div>
-        <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full blur-xl transform -translate-x-12 translate-y-12"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,black_70%,transparent_100%)] opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
         
         {isPopular && (
           <motion.div
@@ -74,48 +73,29 @@ export function PriceCard({ platform, price, isPopular, onSelect }: PriceCardPro
             animate={{ scale: 1 }}
             transition={{ type: "spring", delay: 0.3 }}
           >
-            <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-accent text-white border-0 px-4 py-2 rounded-full font-bold shadow-lg">
-              <Star className="h-4 w-4 mr-2" />
+            <Badge className="absolute -top-2.5 left-1/2 transform -translate-x-1/2 bg-forest/10 text-forest text-xs border-0 px-3 py-1 rounded-full font-medium">
               Most Popular
             </Badge>
           </motion.div>
         )}
         
         <div className="relative z-10">
-          <div className="text-center mb-8">
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", delay: 0.2 }}
-              className="flex justify-center mb-4"
-            >
-              {config.icon}
-            </motion.div>
-            <h3 className="text-2xl font-bold mb-2">{platformName}</h3>
-            <div className="w-16 h-1 bg-white/30 rounded-full mx-auto"></div>
+          <div className="text-center mb-6">
+            <h3 className="text-lg font-medium mb-1 text-forest-dark group-hover:text-forest transition-colors">{platformName}</h3>
+            <div className="text-sm text-forest/60 mb-4">-15% Discount</div>
+            <div className="text-4xl font-bold text-forest">₹{price}</div>
+            <div className="text-forest/60 text-sm font-medium mt-1">per seat</div>
           </div>
 
-          <div className="text-center mb-8">
-            <motion.div
-              initial={{ scale: 0.5 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", delay: 0.4 }}
-            >
-              <div className="text-5xl font-bold mb-2">₹{price}</div>
-              <div className="text-white/80 text-lg font-medium">per seat</div>
-            </motion.div>
-          </div>
-
-          <div className="space-y-3 mb-8">
+          <div className="space-y-2 mb-6 text-center">
             {config.features.map((feature, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.5 + index * 0.1 }}
-                className="flex items-center text-white/95 font-medium"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 + index * 0.1 }}
+                className="text-sm text-forest-dark/70"
               >
-                <Check className="h-5 w-5 mr-3 text-white bg-white/20 rounded-full p-1" />
                 {feature}
               </motion.div>
             ))}
@@ -127,11 +107,10 @@ export function PriceCard({ platform, price, isPopular, onSelect }: PriceCardPro
           >
             <Button 
               onClick={onSelect}
-              className="w-full h-14 bg-white text-gray-900 hover:bg-white/95 font-bold text-lg rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+              className="w-full h-10 bg-white text-forest border border-forest/20 hover:bg-forest hover:text-white font-medium text-sm rounded-xl transition-all duration-300"
               size="lg"
             >
-              Choose {platformName}
-              <Sparkles className="ml-2 h-5 w-5" />
+              Try For Free
             </Button>
           </motion.div>
         </div>

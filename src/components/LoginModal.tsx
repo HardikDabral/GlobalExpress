@@ -46,7 +46,9 @@ export function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md bg-gradient-card border-0 rounded-3xl">
+      <DialogContent className="max-w-md bg-white border-0 rounded-3xl shadow-2xl overflow-hidden">
+        {/* Decorative Background */}
+        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,black_70%,transparent_100%)] opacity-50"></div>
         {step === 'select' ? (
           <div>
             <DialogHeader className="text-center mb-8">
@@ -64,11 +66,11 @@ export function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps) {
                 whileTap={{ scale: 0.98 }}
               >
                 <Card 
-                  className="p-6 cursor-pointer hover:shadow-premium-lg transition-all duration-300 bg-gradient-subtle border-0 rounded-2xl"
+                  className="p-6 cursor-pointer hover:shadow-lg transition-all duration-300 bg-forest/5 hover:bg-forest/10 border-0 rounded-2xl relative overflow-hidden group"
                   onClick={() => handleTypeSelect('user')}
                 >
                   <div className="flex items-center space-x-4">
-                    <div className="p-3 bg-gradient-primary rounded-2xl">
+                    <div className="p-3 bg-forest rounded-2xl">
                       <User className="h-8 w-8 text-white" />
                     </div>
                     <div className="flex-1">
@@ -90,11 +92,11 @@ export function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps) {
                 whileTap={{ scale: 0.98 }}
               >
                 <Card 
-                  className="p-6 cursor-pointer hover:shadow-premium-lg transition-all duration-300 bg-gradient-secondary border-0 rounded-2xl"
+                  className="p-6 cursor-pointer hover:shadow-lg transition-all duration-300 bg-forest-lighter/10 hover:bg-forest-lighter/20 border-0 rounded-2xl relative overflow-hidden group"
                   onClick={() => handleTypeSelect('admin')}
                 >
                   <div className="flex items-center space-x-4">
-                    <div className="p-3 bg-gradient-accent rounded-2xl">
+                    <div className="p-3 bg-forest-light rounded-2xl">
                       <Shield className="h-8 w-8 text-white" />
                     </div>
                     <div className="flex-1">
@@ -121,7 +123,7 @@ export function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps) {
                 transition={{ type: "spring", delay: 0.1 }}
                 className="flex justify-center mb-4"
               >
-                <div className={`p-4 ${userType === 'admin' ? 'bg-gradient-accent' : 'bg-gradient-primary'} rounded-2xl`}>
+                <div className={`p-4 ${userType === 'admin' ? 'bg-forest-light' : 'bg-forest'} rounded-2xl`}>
                   {userType === 'admin' ? 
                     <Shield className="h-10 w-10 text-white" /> : 
                     <User className="h-10 w-10 text-white" />
@@ -174,13 +176,13 @@ export function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps) {
                   type="button"
                   variant="outline"
                   onClick={handleBack}
-                  className="flex-1 h-12 rounded-2xl"
+                  className="flex-1 h-12 rounded-2xl bg-gray-100 hover:bg-gray-200 border-0 text-gray-700 font-medium transition-all duration-300"
                 >
                   Back
                 </Button>
                 <Button 
                   type="submit"
-                  className={`flex-1 h-12 ${userType === 'admin' ? 'bg-gradient-accent' : 'bg-gradient-primary'} text-white hover:shadow-premium-lg rounded-2xl font-bold`}
+                  className={`flex-1 h-12 ${userType === 'admin' ? 'bg-forest-light' : 'bg-forest'} text-white hover:opacity-90 rounded-2xl font-bold transition-all duration-300 relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-transparent after:via-white/20 after:to-transparent after:animate-shimmer after:duration-1000`}
                 >
                   Login as {userType === 'admin' ? 'Admin' : 'User'}
                 </Button>

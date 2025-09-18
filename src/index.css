@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom Swiper Styles */
+.popular-destinations-swiper {
+  padding: 20px 0 60px 0;
+}
+
+.popular-destinations-swiper .swiper-pagination-bullet {
+  background: #3b82f6;
+  opacity: 0.3;
+  transition: all 0.3s ease;
+}
+
+.popular-destinations-swiper .swiper-pagination-bullet-active {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
 /* Premium travel booking design system */
 
 @layer base {

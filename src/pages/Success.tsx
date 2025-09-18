@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, Home, MapPin, Bus, Calendar, Users, CreditCard } from 'lucide-react';
+import { CheckCircle, Home, MapPin, Bus, Calendar, Users, CreditCard, Clock } from 'lucide-react';
+import { format } from 'date-fns';
 import { useBusBooking } from '@/hooks/useBusBooking';
 
 export default function Success() {
@@ -12,6 +13,7 @@ export default function Success() {
     selectedDestination, 
     selectedPlatform, 
     selectedSeatNumbers, 
+    selectedDateTime,
     pricingData,
     buses,
     bookings 
@@ -78,6 +80,26 @@ export default function Success() {
                 <div>
                   <p className="font-medium">Bus</p>
                   <p className="text-muted-foreground">{bus?.name}</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <Calendar className="h-5 w-5 text-primary mt-0.5" />
+                <div>
+                  <p className="font-medium">Journey Date</p>
+                  <p className="text-muted-foreground">
+                    {format(new Date(selectedDateTime), 'PPP')}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <Clock className="h-5 w-5 text-primary mt-0.5" />
+                <div>
+                  <p className="font-medium">Journey Time</p>
+                  <p className="text-muted-foreground">
+                    {format(new Date(selectedDateTime), 'hh:mm a')}
+                  </p>
                 </div>
               </div>
 

@@ -37,10 +37,12 @@ interface BusBookingContextType {
   selectedSeats: number;
   selectedPlatform: string;
   selectedSeatNumbers: number[];
+  selectedDateTime: string;
   setSelectedDestination: (destination: string) => void;
   setSelectedSeats: (seats: number) => void;
   setSelectedPlatform: (platform: string) => void;
   setSelectedSeatNumbers: (seats: number[]) => void;
+  setSelectedDateTime: (dateTime: string) => void;
   addBooking: (booking: Omit<Booking, 'id' | 'timestamp'>) => void;
   initializeData: () => void;
 }
@@ -87,6 +89,7 @@ export function BusBookingProvider({ children }: { children: ReactNode }) {
   const [selectedSeats, setSelectedSeats] = useState<number>(1);
   const [selectedPlatform, setSelectedPlatform] = useState<string>('');
   const [selectedSeatNumbers, setSelectedSeatNumbers] = useState<number[]>([]);
+  const [selectedDateTime, setSelectedDateTime] = useState<string>('');
 
   const initializeData = () => {
     const storedBuses = localStorage.getItem('buses');
@@ -143,10 +146,12 @@ export function BusBookingProvider({ children }: { children: ReactNode }) {
       selectedSeats,
       selectedPlatform,
       selectedSeatNumbers,
+      selectedDateTime,
       setSelectedDestination,
       setSelectedSeats,
       setSelectedPlatform,
       setSelectedSeatNumbers,
+      setSelectedDateTime,
       addBooking,
       initializeData
     }}>

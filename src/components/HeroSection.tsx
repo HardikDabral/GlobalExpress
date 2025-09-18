@@ -1,76 +1,61 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Bus, MapPin, Shield, Clock, LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { LoginModal } from '@/components/LoginModal';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { MapPin, Users, ArrowRight, Star, Calendar, Clock } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar as CalendarComponent } from '@/components/ui/calendar';
+import { cn } from '@/lib/utils';
+import { format } from 'date-fns';
+import { useBusBooking } from '@/hooks/useBusBooking';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import heroBg from "../../public/images/herosection4.webp"
+import googleIcon from "../../public/images/google.svg"
+import trustPilotIcon from "../../public/images/trust-pilot.svg"
 
 export function HeroSection() {
-  const [showLogin, setShowLogin] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const navigate = useNavigate();
+  const { destinations, setSelectedDestination, setSelectedSeats, selectedDestination, selectedSeats, selectedDateTime, setSelectedDateTime } = useBusBooking();
+  const [localDestination, setLocalDestination] = useState(selectedDestination);
+  const [localSeats, setLocalSeats] = useState<number | ''>(selectedSeats);
+  const [date, setDate] = useState<Date | undefined>(
+    selectedDateTime ? new Date(selectedDateTime) : undefined
+  );
+  const [time, setTime] = useState<string>(
+    selectedDateTime ? format(new Date(selectedDateTime), 'HH:mm') : "12:00"
+  );
 
-  const handleLogin = (userType: 'user' | 'admin', userData?: any) => {
-    setUser({ ...userData, userType });
-  };
-
-  const handleLogout = () => {
-    setUser(null);
+  const handleViewPricing = () => {
+    if (!localDestination || !localSeats || typeof localSeats !== 'number' || localSeats < 1 || localSeats > 10 || !date) return;
+    
+    const dateTime = date ? `${format(date, 'yyyy-MM-dd')}T${time}` : '';
+    setSelectedDestination(localDestination);
+    setSelectedSeats(localSeats);
+    setSelectedDateTime(dateTime);
+    navigate('/pricing');
   };
 
   return (
-    <section className="min-h-screen hero-gradient flex items-center justify-center relative overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
-        <div className="absolute bottom-20 right-10 w-40 h-40 bg-white/10 rounded-full blur-xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
-      </div>
-
-      <div className="container mx-auto px-6 py-20 relative z-10">
-        {/* Login/User Section */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="absolute top-8 right-8"
+    <div className="relative">
+      <section className="h-[500px] md:h-[500px] lg:h-[600px] flex max-w-[1440px] mx-auto items-center justify-center relative pb-16">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${heroBg})` }}
         >
-          {user ? (
-            <div className="flex items-center space-x-4">
-              <div className="text-white text-right">
-                <p className="font-semibold">{user.name}</p>
-                <p className="text-sm text-white/80 capitalize">{user.userType}</p>
-              </div>
-              <Button 
-                onClick={handleLogout}
-                variant="outline"
-                className="bg-white/10 border-white/20 text-white hover:bg-white/20 rounded-2xl"
-              >
-                Logout
-              </Button>
-            </div>
-          ) : (
-            <Button 
-              onClick={() => setShowLogin(true)}
-              className="bg-white/10 border border-white/20 text-white hover:bg-white/20 rounded-2xl backdrop-blur-sm"
-              variant="outline"
-            >
-              <LogIn className="h-4 w-4 mr-2" />
-              Login
-            </Button>
-          )}
-        </motion.div>
-        <div className="text-center text-white">
+          <div className="absolute inset-0 bg-black/40 rounded-3xl"></div>
+        </div>
+
+        <div className="container mx-auto px-6 py-20 relative z-10 flex flex-col justify-between h-full">
+        {/* Main Content */}
+        <div className="text-center text-white flex-1 flex flex-col justify-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="mb-8"
           >
-            <div className="flex justify-center mb-6">
-              <div className="p-4 bg-white/20 rounded-3xl backdrop-blur-sm">
-                <Bus className="h-16 w-16 text-white" />
-              </div>
-            </div>
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
+            <h1 className="text-3xl md:text-7xl font-bold leading-tight mb-6">
               Book Your Ride.
               <br />
               <span className="bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
@@ -81,50 +66,164 @@ export function HeroSection() {
               Experience premium bus travel with instant booking, real-time tracking, and guaranteed comfort.
             </p>
           </motion.div>
+        </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-12"
-          >
-            <div className="flex flex-col items-center p-6 bg-white/10 rounded-2xl backdrop-blur-sm">
-              <MapPin className="h-8 w-8 mb-3 text-white" />
-              <h3 className="text-lg font-semibold mb-2">Multiple Routes</h3>
-              <p className="text-white/80 text-center">Choose from premium destinations across the country</p>
-            </div>
-            <div className="flex flex-col items-center p-6 bg-white/10 rounded-2xl backdrop-blur-sm">
-              <Shield className="h-8 w-8 mb-3 text-white" />
-              <h3 className="text-lg font-semibold mb-2">100% Secure</h3>
-              <p className="text-white/80 text-center">Safe and secure booking with instant confirmation</p>
-            </div>
-            <div className="flex flex-col items-center p-6 bg-white/10 rounded-2xl backdrop-blur-sm">
-              <Clock className="h-8 w-8 mb-3 text-white" />
-              <h3 className="text-lg font-semibold mb-2">24/7 Support</h3>
-              <p className="text-white/80 text-center">Round-the-clock customer service for your journey</p>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex justify-center"
-          >
-            <div className="p-1 bg-white/20 rounded-3xl backdrop-blur-sm">
-              <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-2">
-                <div className="text-6xl">🚌</div>
+        {/* Ratings Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="flex justify-center mb-8 mt-8 md:mt-4"
+        >
+          <div className="flex items-center bg-white/10 backdrop-blur-sm rounded-full px-4 py-3 md:px-6">
+            <div className="flex items-start md:items-center">
+              <img src={googleIcon} alt="Google" className="h-5 w-5 md:h-6 md:w-6 mr-2 md:mr-3 mt-1 md:mt-0" />
+              <div className="text-left">
+                <div className="flex flex-col">
+                  <span className="text-white font-semibold text-xs md:text-base">Google Rating 4.9</span>
+                  <div className="flex mt-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="h-2.5 w-2.5 md:h-4 md:w-4 text-yellow-400 fill-current" />
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
-          </motion.div>
-        </div>
-      </div>
+            
+            <div className="mx-3 md:mx-4 h-6 md:h-8 w-px bg-white/30"></div>
+            
+            <div className="flex items-start md:items-center">
+              <img src={trustPilotIcon} alt="TrustPilot" className="h-5 w-5 md:h-6 md:w-6 mr-2 md:mr-3 mt-1 md:mt-0" />
+              <div className="text-left">
+                <div className="flex flex-col">
+                  <span className="text-white font-semibold text-xs md:text-base">Trustpilot Rating 4.2</span>
+                  <div className="flex mt-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="h-2.5 w-2.5 md:h-4 md:w-4 text-yellow-400 fill-current" />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
 
-      <LoginModal 
-        isOpen={showLogin}
-        onClose={() => setShowLogin(false)}
-        onLogin={handleLogin}
-      />
-    </section>
+        </div>
+      </section>
+
+      {/* Booking Form - Half in hero, half out */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.6 }}
+        className="absolute left-0 right-0 -bottom-[250px] md:bottom-0 md:translate-y-1/2 z-20"
+      >
+        <div className="container mx-auto px-6 max-w-[1440px]">
+          <div className="bg-white rounded-3xl p-8 md:p-10 shadow-2xl max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8 items-end">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <MapPin className="h-4 w-4 inline mr-2" />
+                Select Destination
+              </label>
+              <Select value={localDestination} onValueChange={setLocalDestination}>
+                <SelectTrigger className="h-12 bg-gray-50 border border-gray-200 rounded-xl">
+                  <SelectValue placeholder="Choose destination" />
+                </SelectTrigger>
+                <SelectContent>
+                  {destinations.map((destination) => (
+                    <SelectItem key={destination} value={destination}>
+                      {destination}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <Users className="h-4 w-4 inline mr-2" />
+                Number of Seats
+              </label>
+              <Input
+                type="number"
+                min="1"
+                max="10"
+                value={localSeats}
+                onChange={(e) => {
+                  const value = e.target.value.replace(/^0+/, '');
+                  if (value === '') {
+                    setLocalSeats('');
+                  } else {
+                    const numValue = Number(value);
+                    if (!isNaN(numValue) && numValue >= 0 && numValue <= 10) {
+                      setLocalSeats(numValue);
+                    }
+                  }
+                }}
+                className="h-12 bg-gray-50 border border-gray-200 rounded-xl"
+                placeholder="Enter seats"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <Calendar className="h-4 w-4 inline mr-2" />
+                Date & Time
+              </label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full h-12 bg-gray-50 border border-gray-200 rounded-xl justify-start text-left font-normal",
+                      !date && "text-muted-foreground"
+                    )}
+                  >
+                    <Calendar className="mr-2 h-4 w-4" />
+                    {date ? format(date, "PPP") : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <CalendarComponent
+                    mode="single"
+                    selected={date}
+                    onSelect={setDate}
+                    initialFocus
+                    disabled={(date) => date < new Date()}
+                  />
+                  <div className="p-3 border-t border-border">
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-4 w-4" />
+                      <Input
+                        type="time"
+                        value={time}
+                        onChange={(e) => setTime(e.target.value)}
+                        className="h-8"
+                      />
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
+            
+            <div>
+              <Button 
+                onClick={handleViewPricing}
+                disabled={!localDestination || !localSeats || typeof localSeats !== 'number' || localSeats < 1 || localSeats > 10}
+                className="w-full h-12 bg-forest hover:bg-forest-dark text-white font-semibold rounded-xl transition-all duration-300 disabled:opacity-50 relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-transparent after:via-white/20 after:to-transparent after:animate-shimmer after:duration-1000"
+              >
+                Get Bus Quote
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+          </div>
+        </div>
+      </motion.div>
+      
+      {/* Spacer to account for the overlapping form */}
+      <div className="h-16"></div>
+    </div>
   );
 }
