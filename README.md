@@ -1,74 +1,79 @@
-# Welcome to your Lovable project
+# ExpressTravel - Bus Booking Platform
 
-## Project info
+A modern, responsive bus booking platform built with React and TypeScript. Book premium bus tickets online with real-time seat selection, pricing comparison, and secure payment processing.
 
-**URL**: https://lovable.dev/projects/63c9f04c-6033-4346-aa05-e6a624580c09
+## Features
 
-## How can I edit this code?
+- 🚌 **Bus Booking**: Search and book bus tickets across multiple routes
+- 💺 **Seat Selection**: Interactive seat map with real-time availability
+- 💰 **Price Comparison**: Compare prices across different platforms
+- 🔐 **User Authentication**: Secure login system for users and admins
+- 📱 **Responsive Design**: Optimized for mobile and desktop
+- ⚡ **Fast Performance**: Lazy loading and code splitting for optimal speed
 
-There are several ways of editing your application.
+## Live Demo
 
-**Use Lovable**
+**URL**: https://global-express-one.vercel.app
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/63c9f04c-6033-4346-aa05-e6a624580c09) and start prompting.
+## Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prerequisites
 
-**Use your preferred IDE**
+- Node.js (v18 or higher)
+- npm or yarn
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+### Installation
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
+# Clone the repository
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Navigate to the project directory
+cd express-travel-bus-booking
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Available Scripts
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
 
-**Use GitHub Codespaces**
+## Tech Stack
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- **Frontend**: React 18, TypeScript
+- **Styling**: Tailwind CSS, shadcn/ui
+- **Routing**: React Router DOM
+- **State Management**: React Context API
+- **Animations**: Framer Motion
+- **Build Tool**: Vite
+- **Deployment**: Vercel
 
-## What technologies are used for this project?
+## Project Structure
 
-This project is built with:
+```
+src/
+├── components/     # Reusable UI components
+├── pages/         # Page components
+├── hooks/         # Custom React hooks
+├── contexts/      # React Context providers
+├── lib/           # Utility functions
+└── main.tsx       # Application entry point
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Contributing
 
-## How can I deploy this project?
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
 
-Simply open [Lovable](https://lovable.dev/projects/63c9f04c-6033-4346-aa05-e6a624580c09) and click on Share -> Publish.
+## License
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
-# GlobalExpress
+This project is private and proprietary to ExpressTravel.
