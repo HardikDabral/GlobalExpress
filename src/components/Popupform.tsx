@@ -77,7 +77,7 @@ export function PopupForm({ isOpen, onClose, defaultDestination }: PopupFormProp
         <>
           {/* Backdrop */}
           <div 
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100]"
             onClick={onClose}
           />
 
@@ -102,7 +102,7 @@ export function PopupForm({ isOpen, onClose, defaultDestination }: PopupFormProp
 
               {/* Title */}
               <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-gray-900">Book Your Journey</h2>
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-forest via-forest-light to-forest-lighter text-transparent bg-clip-text">Book Your Journey</h2>
                 <p className="text-muted-foreground mt-2">Fill in the details to get started</p>
               </div>
 

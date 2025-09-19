@@ -19,8 +19,7 @@ export function Layout({ children }: LayoutProps) {
           <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <Bus className="h-8 w-8 text-forest" />
             <span className="text-2xl font-bold bg-gradient-to-r from-forest via-forest-light to-forest-lighter text-transparent bg-clip-text">
-              <span className="md:hidden">ET</span>
-              <span className="hidden md:inline">ExpressTravel</span>
+              <span className="text-lg md:text-2xl">Express</span>
             </span>
           </Link>
           {user ? (
@@ -74,8 +73,7 @@ export function Layout({ children }: LayoutProps) {
               <div className="flex items-center gap-2">
                 <Bus className="h-8 w-8 text-forest" />
                 <span className="text-2xl font-bold bg-gradient-to-r from-forest via-forest-light to-forest-lighter text-transparent bg-clip-text">
-                  <span className="md:hidden">ET</span>
-                  <span className="hidden md:inline">ExpressTravel</span>
+                  <span className="text-lg md:text-2xl">Express</span>
                 </span>
               </div>
               <p className="text-muted-foreground">
@@ -159,7 +157,7 @@ export function Layout({ children }: LayoutProps) {
           <div className="mt-12 pt-8 border-t">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <p className="text-muted-foreground text-sm">
-                © {new Date().getFullYear()} ExpressTravel. All rights reserved.
+                © {new Date().getFullYear()} Express. All rights reserved.
               </p>
               <div className="flex items-center gap-6">
                 <span className="text-sm text-muted-foreground">

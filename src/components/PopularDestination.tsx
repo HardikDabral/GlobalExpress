@@ -107,15 +107,16 @@ const PopularDestination = () => {
             <SwiperSlide key={destination.id}>
               <Card className="group overflow-hidden bg-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border-0 gpu-accelerated will-change-transform">
                 {/* Desktop Image */}
-                <div className="relative h-48 overflow-hidden hidden md:block">
+                <div className="relative h-48 overflow-hidden hidden md:block rounded-t-lg">
                   <img
                     src={destination.image}
                     alt={destination.name}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
+                    className="w-full h-full object-cover rounded-t-lg"
+                    loading="eager"
                     width="400"
                     height="192"
                     decoding="async"
+                    fetchPriority="high"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   <div className="absolute top-4 right-4">
@@ -130,16 +131,28 @@ const PopularDestination = () => {
                   </div>
                 </div>
 
-                {/* Mobile Header - No Image */}
-                <div className="md:hidden p-6 pb-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-xl font-bold text-gray-900">{destination.name}</h3>
-                    <div className="flex items-center bg-forest/10 rounded-full px-3 py-1">
-                      <Star className="h-4 w-4 text-forest fill-current mr-1" />
-                      <span className="text-sm font-semibold text-forest">{destination.rating}</span>
+                {/* Mobile Image */}
+                <div className="relative h-40 overflow-hidden md:hidden mx-4 rounded-t-lg">
+                  <img
+                    src={destination.image}
+                    alt={destination.name}
+                    className="w-full h-full object-cover rounded-t-lg"
+                    loading="lazy"
+                    width="300"
+                    height="160"
+                    decoding="async"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                  <div className="absolute top-3 right-3">
+                    <div className="flex items-center bg-white/90 backdrop-blur-sm rounded-full px-2 py-1">
+                      <Star className="h-3 w-3 text-forest fill-current mr-1" />
+                      <span className="text-xs font-semibold text-gray-800">{destination.rating}</span>
                     </div>
                   </div>
-                  <p className="text-gray-600 text-sm mb-3">{destination.description}</p>
+                  <div className="absolute bottom-3 left-3">
+                    <h3 className="text-lg font-bold text-white mb-1">{destination.name}</h3>
+                    <p className="text-white/90 text-xs">{destination.description}</p>
+                  </div>
                 </div>
                 
                 <div className="p-6 md:pt-6 pt-0">
@@ -149,7 +162,7 @@ const PopularDestination = () => {
                       <span className="text-sm">{destination.duration}</span>
                     </div>
                     <div className="text-right">
-                      <p className="text-2xl font-bold text-green-700">{destination.price}</p>
+                      <p className="text-lg font-bold text-green-700">{destination.price}</p>
                       <p className="text-xs text-muted-foreground">per seat</p>
                     </div>
                   </div>

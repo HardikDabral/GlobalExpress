@@ -68,7 +68,7 @@ const OurServices = () => {
       {/* <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
       <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div> */}
       
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 relative">
         <div className="text-center mb-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -76,8 +76,7 @@ const OurServices = () => {
             viewport={{ once: true }}
             className="inline-block"
           >
-            <span className="text-forest/60 uppercase tracking-wider font-medium">Why Choose Us</span>
-          
+            <span className="text-forest/60 uppercase tracking-wider font-medium bg-gradient-to-r from-forest via-forest-light to-forest-lighter text-transparent bg-clip-text">Why Choose Us</span>
           </motion.div>
         </div>
         </div>

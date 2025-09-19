@@ -232,10 +232,30 @@
   }
 
   /* Optimize images */
-  img {
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-  }
+          img {
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            content-visibility: auto;
+            contain-intrinsic-size: 300px 160px;
+          }
+          
+          /* Optimize destination images specifically */
+          .popular-destinations-swiper img {
+            will-change: transform;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+          }
+          
+          /* Custom pagination dots color */
+          .popular-destinations-swiper .swiper-pagination-bullet {
+            background-color: #16a34a !important;
+            opacity: 0.3;
+          }
+          
+          .popular-destinations-swiper .swiper-pagination-bullet-active {
+            background-color: #16a34a !important;
+            opacity: 1;
+          }
 
   /* Reduce motion for users who prefer it */
   @media (prefers-reduced-motion: reduce) {
