@@ -136,7 +136,7 @@ export function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps) {
             <form onSubmit={handleLogin} className="space-y-6 relative">
               <div>
                 <Label htmlFor="name" className="flex items-center text-foreground font-semibold mb-3">
-                  <User className="h-5 w-5 mr-3 text-primary" />
+                  <User className="h-5 w-5 mr-3 text-forest" />
                   Full Name
                 </Label>
                 <Input
@@ -152,7 +152,7 @@ export function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps) {
 
               <div>
                 <Label htmlFor="email" className="flex items-center text-foreground font-semibold mb-3">
-                  <Mail className="h-5 w-5 mr-3 text-primary" />
+                  <Mail className="h-5 w-5 mr-3 text-forest" />
                   Email Address
                 </Label>
                 <Input
@@ -168,7 +168,7 @@ export function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps) {
 
               <div>
                 <Label htmlFor="password" className="flex items-center text-foreground font-semibold mb-3">
-                  <Lock className="h-5 w-5 mr-3 text-primary" />
+                  <Lock className="h-5 w-5 mr-3 text-forest" />
                   Password
                 </Label>
                 <Input

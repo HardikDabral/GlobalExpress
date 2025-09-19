@@ -69,7 +69,7 @@ export default function Success() {
           
           <div className="relative">
             <div className="text-center mb-8">
-              <Badge className="bg-forest/10 text-forest text-base px-4 py-2 rounded-full">
+              <Badge className="bg-forest/10 text-forest text-base px-4 py-2 rounded-full hover:bg-forest/15 transition-colors duration-200">
                 Booking ID: {latestBooking.id}
               </Badge>
             </div>
