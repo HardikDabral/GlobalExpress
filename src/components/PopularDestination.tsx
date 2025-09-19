@@ -78,34 +78,43 @@ const PopularDestination = () => {
 
         <Swiper
           modules={[Pagination, Autoplay]}
-          spaceBetween={30}
+          spaceBetween={20}
           slidesPerView={1}
           pagination={{ clickable: true }}
           autoplay={{
-            delay: 4000,
-            disableOnInteraction: false,
+            delay: 5000,
+            disableOnInteraction: true,
+            pauseOnMouseEnter: true,
           }}
+          speed={800}
           breakpoints={{
             640: {
               slidesPerView: 2,
+              spaceBetween: 20,
             },
             1024: {
               slidesPerView: 3,
+              spaceBetween: 24,
             },
             1280: {
               slidesPerView: 4,
+              spaceBetween: 30,
             },
           }}
           className="popular-destinations-swiper"
         >
           {destinations.map((destination) => (
             <SwiperSlide key={destination.id}>
-              <Card className="group overflow-hidden bg-white shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border-0">
+              <Card className="group overflow-hidden bg-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border-0 gpu-accelerated will-change-transform">
                 <div className="relative h-48 overflow-hidden">
                   <img
                     src={destination.image}
                     alt={destination.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    width="400"
+                    height="192"
+                    decoding="async"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   <div className="absolute top-4 right-4">
@@ -146,14 +155,14 @@ const PopularDestination = () => {
                   </div>
                   
                   <Button 
-                    className="w-full bg-forest hover:bg-forest-dark text-white transition-all duration-300 relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-transparent after:via-white/20 after:to-transparent after:animate-shimmer after:duration-1000"
+                    className="w-full bg-forest hover:bg-forest-dark text-white transition-colors duration-200"
                     onClick={() => {
                       setSelectedDestination(destination.name);
                       setShowBooking(true);
                     }}
                   >
                     Book Now
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </div>
               </Card>

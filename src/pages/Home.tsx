@@ -1,22 +1,36 @@
+import { Suspense, lazy } from 'react';
 import { HeroSection } from '@/components/HeroSection';
-import PopularDestination from '@/components/PopularDestination';
-import OurServices from '@/components/OurServices';
-import Testimonials from '@/components/Testimonials';
+
+// Lazy load components for better performance
+const PopularDestination = lazy(() => import('@/components/PopularDestination'));
+const OurServices = lazy(() => import('@/components/OurServices'));
+const Testimonials = lazy(() => import('@/components/Testimonials'));
+
+// Loading component
+const ComponentLoader = () => (
+  <div className="flex items-center justify-center py-20">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-forest"></div>
+  </div>
+);
 
 export default function Home() {
   return (
     <>
-      {/* Hero Section */}
+      {/* Hero Section - Load immediately */}
       <HeroSection />
 
-      {/* Popular Destinations */}
-      <PopularDestination />
+      {/* Lazy loaded components with Suspense */}
+      <Suspense fallback={<ComponentLoader />}>
+        <PopularDestination />
+      </Suspense>
 
-      {/* Our Services */}
-      <OurServices />
+      <Suspense fallback={<ComponentLoader />}>
+        <OurServices />
+      </Suspense>
 
-      {/* Testimonials */}
-      <Testimonials />
+      <Suspense fallback={<ComponentLoader />}>
+        <Testimonials />
+      </Suspense>
     </>
   );
 }

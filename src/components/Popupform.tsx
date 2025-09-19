@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -9,6 +9,7 @@ import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { useBusBooking } from '@/hooks/useBusBooking';
+import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 interface PopupFormProps {
@@ -19,6 +20,7 @@ interface PopupFormProps {
 
 export function PopupForm({ isOpen, onClose, defaultDestination }: PopupFormProps) {
   const navigate = useNavigate();
+  const { user, setShowLogin, pendingFormData, setPendingFormData } = useAuth();
   const { destinations, setSelectedDestination, setSelectedSeats, selectedDateTime, setSelectedDateTime } = useBusBooking();
   const [localDestination, setLocalDestination] = useState(defaultDestination || '');
   const [localSeats, setLocalSeats] = useState<number | ''>(1);
@@ -29,10 +31,39 @@ export function PopupForm({ isOpen, onClose, defaultDestination }: PopupFormProp
     selectedDateTime ? format(new Date(selectedDateTime), 'HH:mm') : "12:00"
   );
 
+  // Handle pending form data after login
+  useEffect(() => {
+    if (user && pendingFormData) {
+      // Set the form data and navigate
+      setSelectedDestination(pendingFormData.destination);
+      setSelectedSeats(pendingFormData.seats);
+      setSelectedDateTime(pendingFormData.dateTime);
+      setPendingFormData(null); // Clear pending data
+      onClose(); // Close the popup
+      navigate(pendingFormData.navigateTo);
+    }
+  }, [user, pendingFormData, setSelectedDestination, setSelectedSeats, setSelectedDateTime, setPendingFormData, navigate, onClose]);
+
   const handleViewPricing = () => {
     if (!localDestination || !localSeats || typeof localSeats !== 'number' || localSeats < 1 || localSeats > 10 || !date) return;
     
     const dateTime = date ? `${format(date, 'yyyy-MM-dd')}T${time}` : '';
+    
+    // Check if user is logged in
+    if (!user) {
+      // Store form data for after login
+      setPendingFormData({
+        destination: localDestination,
+        seats: localSeats,
+        dateTime: dateTime,
+        navigateTo: '/pricing'
+      });
+      setShowLogin(true);
+      onClose(); // Close the popup form
+      return;
+    }
+    
+    // User is logged in, proceed directly
     setSelectedDestination(localDestination);
     setSelectedSeats(localSeats);
     setSelectedDateTime(dateTime);

@@ -9,12 +9,21 @@ interface User {
   lastLogin: string;
 }
 
+interface PendingFormData {
+  destination: string;
+  seats: number;
+  dateTime: string;
+  navigateTo: string;
+}
+
 interface AuthContextType {
   user: User | null;
   showLogin: boolean;
   setShowLogin: (show: boolean) => void;
   handleLogin: (userType: 'user' | 'admin', userData?: any) => void;
   handleLogout: () => void;
+  pendingFormData: PendingFormData | null;
+  setPendingFormData: (data: PendingFormData | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -22,6 +31,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [showLogin, setShowLogin] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [pendingFormData, setPendingFormData] = useState<PendingFormData | null>(null);
 
   // Check for stored user data on component mount
   useEffect(() => {
@@ -39,10 +49,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const handleLogin = (userType: 'user' | 'admin', userData?: any) => {
     setUser({ ...userData, userType });
+    // Pending form data will be handled by the components that use the hook
   };
 
   const handleLogout = () => {
     setUser(null);
+    setPendingFormData(null);
     localStorage.removeItem('user');
   };
 
@@ -52,7 +64,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       showLogin,
       setShowLogin,
       handleLogin,
-      handleLogout
+      handleLogout,
+      pendingFormData,
+      setPendingFormData
     }}>
       {children}
     </AuthContext.Provider>

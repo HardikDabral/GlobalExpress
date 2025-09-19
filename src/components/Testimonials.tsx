@@ -130,6 +130,10 @@ const Testimonials = () => {
                       src={testimonial.image} 
                       alt={testimonial.name}
                       className="w-12 h-12 rounded-full object-cover ring-2 ring-forest/10"
+                      loading="lazy"
+                      width="48"
+                      height="48"
+                      decoding="async"
                     />
                     <div>
                       <h3 className="font-semibold text-gray-900">{testimonial.name}</h3>

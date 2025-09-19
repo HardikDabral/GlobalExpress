@@ -65,8 +65,8 @@ const OurServices = () => {
       <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,black_70%,transparent_100%)]"></div>
       
       {/* Gradient Orbs */}
-      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
+      {/* <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div> */}
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-10">
@@ -82,7 +82,7 @@ const OurServices = () => {
         </div>
         </div>
         <div className="overflow-hidden py-6 bg-white/80 backdrop-blur-md border-y border-gray-100">
-          <div className="flex animate-marquee-mobile md:animate-marquee whitespace-nowrap">
+          <div className="flex animate-marquee-mobile md:animate-marquee whitespace-nowrap gpu-accelerated will-change-transform">
             {[...services, ...services, ...services, ...services].map((service, index) => (
               <div
                 key={index}

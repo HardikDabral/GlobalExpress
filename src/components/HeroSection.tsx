@@ -10,14 +10,14 @@ import { format } from 'date-fns';
 import { useBusBooking } from '@/hooks/useBusBooking';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import heroBg from "../../public/images/herosection4.webp";
 import googleIcon from "../../public/images/google.svg";
 import trustPilotIcon from "../../public/images/trust-pilot.svg";
 
 export function HeroSection() {
   const navigate = useNavigate();
-  const { user, setShowLogin } = useAuth();
+  const { user, setShowLogin, pendingFormData, setPendingFormData } = useAuth();
   const { destinations, setSelectedDestination, setSelectedSeats, selectedDestination, selectedSeats, selectedDateTime, setSelectedDateTime } = useBusBooking();
   const [localDestination, setLocalDestination] = useState(selectedDestination);
   const [localSeats, setLocalSeats] = useState<number | ''>(selectedSeats);
@@ -28,16 +28,37 @@ export function HeroSection() {
     selectedDateTime ? format(new Date(selectedDateTime), 'HH:mm') : "12:00"
   );
 
+  // Handle pending form data after login
+  useEffect(() => {
+    if (user && pendingFormData) {
+      // Set the form data and navigate
+      setSelectedDestination(pendingFormData.destination);
+      setSelectedSeats(pendingFormData.seats);
+      setSelectedDateTime(pendingFormData.dateTime);
+      setPendingFormData(null); // Clear pending data
+      navigate(pendingFormData.navigateTo);
+    }
+  }, [user, pendingFormData, setSelectedDestination, setSelectedSeats, setSelectedDateTime, setPendingFormData, navigate]);
+
   const handleViewPricing = () => {
     if (!localDestination || !localSeats || typeof localSeats !== 'number' || localSeats < 1 || localSeats > 10 || !date) return;
     
+    const dateTime = date ? `${format(date, 'yyyy-MM-dd')}T${time}` : '';
+    
     // Check if user is logged in
     if (!user) {
+      // Store form data for after login
+      setPendingFormData({
+        destination: localDestination,
+        seats: localSeats,
+        dateTime: dateTime,
+        navigateTo: '/pricing'
+      });
       setShowLogin(true);
       return;
     }
     
-    const dateTime = date ? `${format(date, 'yyyy-MM-dd')}T${time}` : '';
+    // User is logged in, proceed directly
     setSelectedDestination(localDestination);
     setSelectedSeats(localSeats);
     setSelectedDateTime(dateTime);
@@ -54,6 +75,9 @@ export function HeroSection() {
         >
           <div className="absolute inset-0 bg-black/40 rounded-3xl"></div>
         </div>
+        
+        {/* Preload critical images */}
+        <link rel="preload" as="image" href={heroBg} />
 
         <div className="container mx-auto px-6 py-20 relative z-10 flex flex-col justify-between h-full">
         {/* Main Content */}
@@ -85,7 +109,14 @@ export function HeroSection() {
         >
           <div className="flex items-center bg-white/10 backdrop-blur-sm rounded-full px-4 py-3 md:px-6">
             <div className="flex items-start md:items-center">
-              <img src={googleIcon} alt="Google" className="h-5 w-5 md:h-6 md:w-6 mr-2 md:mr-3 mt-1 md:mt-0" />
+              <img 
+                src={googleIcon} 
+                alt="Google" 
+                className="h-5 w-5 md:h-6 md:w-6 mr-2 md:mr-3 mt-1 md:mt-0" 
+                loading="eager"
+                width="24"
+                height="24"
+              />
               <div className="text-left">
                 <div className="flex flex-col">
                   <span className="text-white font-semibold text-xs md:text-base">Google Rating 4.9</span>
@@ -101,7 +132,14 @@ export function HeroSection() {
             <div className="mx-3 md:mx-4 h-6 md:h-8 w-px bg-white/30"></div>
             
             <div className="flex items-start md:items-center">
-              <img src={trustPilotIcon} alt="TrustPilot" className="h-5 w-5 md:h-6 md:w-6 mr-2 md:mr-3 mt-1 md:mt-0" />
+              <img 
+                src={trustPilotIcon} 
+                alt="TrustPilot" 
+                className="h-5 w-5 md:h-6 md:w-6 mr-2 md:mr-3 mt-1 md:mt-0" 
+                loading="eager"
+                width="24"
+                height="24"
+              />
               <div className="text-left">
                 <div className="flex flex-col">
                   <span className="text-white font-semibold text-xs md:text-base">Trustpilot Rating 4.2</span>
