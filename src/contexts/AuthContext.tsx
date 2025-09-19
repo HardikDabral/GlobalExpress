@@ -48,14 +48,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const handleLogin = (userType: 'user' | 'admin', userData?: any) => {
-    setUser({ ...userData, userType });
-    // Pending form data will be handled by the components that use the hook
+    const userWithType = { ...userData, userType };
+    setUser(userWithType);
+    // Store in localStorage
+    localStorage.setItem('user', JSON.stringify(userWithType));
   };
 
   const handleLogout = () => {
+    console.log('Logging out - clearing user data');
     setUser(null);
     setPendingFormData(null);
     localStorage.removeItem('user');
+    console.log('User data cleared from localStorage and state');
   };
 
   return (

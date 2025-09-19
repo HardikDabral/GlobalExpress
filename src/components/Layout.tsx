@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Bus, LogIn, Settings, Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
 import { LoginModal } from '@/components/LoginModal';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface LayoutProps {
@@ -10,6 +10,7 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   const { user, showLogin, setShowLogin, handleLogin, handleLogout } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-forest-lighter/10">
@@ -37,7 +38,10 @@ export function Layout({ children }: LayoutProps) {
                 </Link>
               )}
               <Button 
-                onClick={handleLogout}
+                onClick={() => {
+                  handleLogout();
+                  navigate('/');
+                }}
                 variant="outline" 
                 size="sm"
                 className="text-forest hover:text-forest-dark border-forest/20 hover:border-forest/40"

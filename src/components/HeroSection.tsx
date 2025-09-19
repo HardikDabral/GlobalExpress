@@ -67,6 +67,7 @@ export function HeroSection() {
 
   return (
     <div className="relative bg-white">
+
       <section className="h-[500px] md:h-[500px] lg:h-[600px] flex max-w-[1440px] mx-auto items-center justify-center relative pb-16">
         {/* Background Image */}
         <div 
@@ -230,7 +231,15 @@ export function HeroSection() {
                     {date ? format(date, "PPP") : <span>Pick a date</span>}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
+                 <PopoverContent 
+                   className="w-auto p-0 z-30" 
+                   align="start" 
+                   side="bottom" 
+                   sideOffset={8}
+                   avoidCollisions={false}
+                   collisionPadding={0}
+                   sticky="always"
+                 >
                   <CalendarComponent
                     mode="single"
                     selected={date}

@@ -98,7 +98,7 @@ export default function Pricing() {
       <main className="container mx-auto px-4 py-12">
         <div className="text-center mb-8">
           <span className="text-forest/60 font-medium">PRICING</span>
-          <h2 className="text-4xl font-bold mt-2 mb-2 bg-gradient-to-r from-forest via-forest-light to-forest-lighter text-transparent bg-clip-text">Choose Your Platform</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-2 bg-gradient-to-r from-forest via-forest-light to-forest-lighter text-transparent bg-clip-text">Choose Your Platform</h2>
           <p className="text-muted-foreground">
             Compare prices from different platforms and select the best option for you
           </p>

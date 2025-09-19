@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -16,23 +16,23 @@ interface LoginModalProps {
 export function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps) {
   const [step, setStep] = useState<'select' | 'login'>('select');
   const [userType, setUserType] = useState<'user' | 'admin'>('user');
-  const [formData, setFormData] = useState(() => {
-    // Check if there's stored user data
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      const userData = JSON.parse(storedUser);
-      return {
-        name: userData.name || '',
-        email: userData.email || '',
-        password: '' // For security, we don't store/retrieve password
-      };
-    }
-    return {
-      name: '',
-      email: '',
-      password: ''
-    };
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: ''
   });
+
+  // Reset form data when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setFormData({
+        name: '',
+        email: '',
+        password: ''
+      });
+      setStep('select');
+    }
+  }, [isOpen]);
 
   const handleTypeSelect = (type: 'user' | 'admin') => {
     setUserType(type);
@@ -51,8 +51,6 @@ export function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps) {
       lastLogin: new Date().toISOString()
     };
 
-    // Store in localStorage
-    localStorage.setItem('user', JSON.stringify(userData));
     onLogin(userType, userData);
     onClose();
     setStep('select');
