@@ -95,16 +95,23 @@ export default function Seats() {
           <div className="flex flex-col gap-4 text-forest/70">
             {/* Mobile Layout - 2 lines */}
             <div className="block md:hidden">
-              <Button 
-                variant="ghost" 
-                onClick={() => navigate('/pricing')}
-                className="self-start text-forest hover:text-forest-dark hover:bg-forest/5 mb-4"
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Pricing
-              </Button>
+              {/* First line: Back button and Platform */}
+              <div className="flex items-center gap-4 mb-4">
+                <Button 
+                  variant="ghost" 
+                  onClick={() => navigate('/pricing')}
+                  className="text-forest hover:text-forest-dark hover:bg-forest/5"
+                >
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back to Pricing
+                </Button>
 
-              {/* Route, Seats and Platform Info */}
+                <Badge className="bg-forest/10 text-forest hover:bg-forest/20 transition-colors py-1.5 px-3">
+                  {getPlatformName(selectedPlatform)}
+                </Badge>
+              </div>
+
+              {/* Second line: Destination and Seats */}
               <div className="flex items-center gap-2 text-sm">
                 <div className="flex items-center gap-2">
                   <MapPin className="h-4 w-4" />
@@ -117,12 +124,6 @@ export default function Seats() {
                   <Users className="h-4 w-4" />
                   {selectedSeats} seat{selectedSeats > 1 ? 's' : ''}
                 </div>
-
-                <div className="h-4 w-px bg-forest/20"></div>
-
-                <Badge className="bg-forest/10 text-forest hover:bg-forest/20 transition-colors py-1.5 px-3">
-                  {getPlatformName(selectedPlatform)}
-                </Badge>
               </div>
             </div>
 

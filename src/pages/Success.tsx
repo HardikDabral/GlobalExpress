@@ -25,6 +25,9 @@ export default function Success() {
   useEffect(() => {
     if (!latestBooking) {
       navigate('/');
+    } else {
+      // Scroll to top when page renders
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [latestBooking, navigate]);
 
