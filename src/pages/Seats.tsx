@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SeatGrid } from '@/components/SeatGrid';
 import { Button } from '@/components/ui/button';
@@ -23,6 +23,10 @@ export default function Seats() {
   
   const [selectedSeatNumbers, setLocalSelectedSeatNumbers] = useState<number[]>([]);
   const [selectedBusId, setSelectedBusId] = useState<number>(1);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
 
   const currentPricing = pricingData.find(p => p.destination === selectedDestination);
 

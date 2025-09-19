@@ -1,4 +1,4 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import { HeroSection } from '@/components/HeroSection';
 
 // Lazy load components for better performance
@@ -14,6 +14,10 @@ const ComponentLoader = () => (
 );
 
 export default function Home() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   return (
     <>
       {/* Hero Section - Load immediately */}

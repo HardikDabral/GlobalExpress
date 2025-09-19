@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { PriceCard } from '@/components/PriceCard';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -19,6 +20,10 @@ export default function Pricing() {
   } = useBusBooking();
 
   const currentPricing = pricingData.find(p => p.destination === selectedDestination);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
 
   if (!selectedDestination || !currentPricing) {
     return (

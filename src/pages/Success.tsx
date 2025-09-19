@@ -210,7 +210,7 @@ export default function Success() {
                 </Button>
                 <Button 
                   variant="outline" 
-                  className="flex-1 h-12 rounded-xl border-forest/20 text-forest hover:bg-forest/5 hover:border-forest/30 transition-all duration-300"
+                  className="flex-1 h-12 rounded-xl border-forest/20 text-forest hover:bg-forest/5 hover:text-forest hover:border-forest/30 transition-all duration-300"
                   onClick={() => window.print()}
                 >
                   Print Ticket

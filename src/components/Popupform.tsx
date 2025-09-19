@@ -30,6 +30,7 @@ export function PopupForm({ isOpen, onClose, defaultDestination }: PopupFormProp
   const [time, setTime] = useState<string>(
     selectedDateTime ? format(new Date(selectedDateTime), 'HH:mm') : "12:00"
   );
+  const [errors, setErrors] = useState<{destination?: string; seats?: string; date?: string}>({});
 
   // Handle pending form data after login
   useEffect(() => {
@@ -45,7 +46,31 @@ export function PopupForm({ isOpen, onClose, defaultDestination }: PopupFormProp
   }, [user, pendingFormData, setSelectedDestination, setSelectedSeats, setSelectedDateTime, setPendingFormData, navigate, onClose]);
 
   const handleViewPricing = () => {
-    if (!localDestination || !localSeats || typeof localSeats !== 'number' || localSeats < 1 || localSeats > 10 || !date) return;
+    const newErrors: {destination?: string; seats?: string; date?: string} = {};
+    
+    // Validate destination
+    if (!localDestination) {
+      newErrors.destination = "Please select a destination";
+    }
+    
+    // Validate seats
+    if (!localSeats || typeof localSeats !== 'number' || localSeats < 1) {
+      newErrors.seats = "Please enter at least 1 seat";
+    } else if (localSeats > 10) {
+      newErrors.seats = "Maximum 10 seats allowed";
+    }
+    
+    // Validate date
+    if (!date) {
+      newErrors.date = "Please select a date";
+    }
+    
+    setErrors(newErrors);
+    
+    // If there are errors, don't proceed
+    if (Object.keys(newErrors).length > 0) {
+      return;
+    }
     
     const dateTime = date ? `${format(date, 'yyyy-MM-dd')}T${time}` : '';
     
@@ -54,7 +79,7 @@ export function PopupForm({ isOpen, onClose, defaultDestination }: PopupFormProp
       // Store form data for after login
       setPendingFormData({
         destination: localDestination,
-        seats: localSeats,
+        seats: localSeats as number, // Type assertion since we've validated it's a number
         dateTime: dateTime,
         navigateTo: '/pricing'
       });
@@ -65,7 +90,7 @@ export function PopupForm({ isOpen, onClose, defaultDestination }: PopupFormProp
     
     // User is logged in, proceed directly
     setSelectedDestination(localDestination);
-    setSelectedSeats(localSeats);
+    setSelectedSeats(localSeats as number); // Type assertion since we've validated it's a number
     setSelectedDateTime(dateTime);
     onClose();
     navigate('/pricing');
@@ -112,8 +137,13 @@ export function PopupForm({ isOpen, onClose, defaultDestination }: PopupFormProp
                     <MapPin className="h-4 w-4 inline mr-2" />
                     Select Destination
                   </label>
-                  <Select value={localDestination} onValueChange={setLocalDestination}>
-                    <SelectTrigger className="h-12 bg-gray-50 border border-gray-200 rounded-xl">
+                  <Select value={localDestination} onValueChange={(value) => {
+                    setLocalDestination(value);
+                    if (errors.destination) {
+                      setErrors(prev => ({ ...prev, destination: undefined }));
+                    }
+                  }}>
+                    <SelectTrigger className={`h-12 bg-gray-50 border rounded-xl ${errors.destination ? 'border-red-500 border-2' : 'border-gray-200'}`}>
                       <SelectValue placeholder="Choose destination" />
                     </SelectTrigger>
                     <SelectContent>
@@ -124,6 +154,9 @@ export function PopupForm({ isOpen, onClose, defaultDestination }: PopupFormProp
                       ))}
                     </SelectContent>
                   </Select>
+                  {errors.destination && (
+                    <p className="text-red-500 text-sm mt-2">{errors.destination}</p>
+                  )}
                 </div>
                 
                 <div>
@@ -146,10 +179,16 @@ export function PopupForm({ isOpen, onClose, defaultDestination }: PopupFormProp
                           setLocalSeats(numValue);
                         }
                       }
+                      if (errors.seats) {
+                        setErrors(prev => ({ ...prev, seats: undefined }));
+                      }
                     }}
-                    className="h-12 bg-gray-50 border border-gray-200 rounded-xl"
+                    className={`h-12 bg-gray-50 border rounded-xl ${errors.seats ? 'border-red-500 border-2' : 'border-gray-200'}`}
                     placeholder="Enter seats"
                   />
+                  {errors.seats && (
+                    <p className="text-red-500 text-sm mt-2">{errors.seats}</p>
+                  )}
                 </div>
 
                 <div className="md:col-span-2">
@@ -162,9 +201,15 @@ export function PopupForm({ isOpen, onClose, defaultDestination }: PopupFormProp
                       <Button
                         variant="outline"
                         className={cn(
-                          "w-full h-12 bg-gray-50 border border-gray-200 rounded-xl justify-start text-left font-normal",
+                          "w-full h-12 bg-gray-50 border rounded-xl justify-start text-left font-normal hover:bg-gray-100 hover:border-gray-300 hover:text-black focus:ring-gray-400 focus:bg-gray-100 focus:text-black",
+                          errors.date ? "border-red-500 border-2" : "border-gray-200",
                           !date && "text-muted-foreground"
                         )}
+                        onClick={() => {
+                          if (errors.date) {
+                            setErrors(prev => ({ ...prev, date: undefined }));
+                          }
+                        }}
                       >
                         <Calendar className="mr-2 h-4 w-4" />
                         {date ? format(date, "PPP") : <span>Pick a date</span>}
@@ -174,7 +219,12 @@ export function PopupForm({ isOpen, onClose, defaultDestination }: PopupFormProp
                       <CalendarComponent
                         mode="single"
                         selected={date}
-                        onSelect={setDate}
+                        onSelect={(selectedDate) => {
+                          setDate(selectedDate);
+                          if (errors.date) {
+                            setErrors(prev => ({ ...prev, date: undefined }));
+                          }
+                        }}
                         initialFocus
                         disabled={(date) => date < new Date()}
                       />
@@ -191,14 +241,16 @@ export function PopupForm({ isOpen, onClose, defaultDestination }: PopupFormProp
                       </div>
                     </PopoverContent>
                   </Popover>
+                  {errors.date && (
+                    <p className="text-red-500 text-sm mt-2">{errors.date}</p>
+                  )}
                 </div>
               </div>
 
               <div className="mt-8">
                 <Button 
                   onClick={handleViewPricing}
-                  disabled={!localDestination || !localSeats || typeof localSeats !== 'number' || localSeats < 1 || localSeats > 10 || !date}
-                  className="w-full h-12 bg-forest hover:bg-forest-dark text-white font-semibold rounded-xl transition-all duration-300 disabled:opacity-50 relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-transparent after:via-white/20 after:to-transparent after:animate-shimmer after:duration-1000"
+                  className="w-full h-12 bg-forest hover:bg-forest-dark text-white font-semibold rounded-xl transition-all duration-300 relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-transparent after:via-white/20 after:to-transparent after:animate-shimmer after:duration-1000"
                 >
                   Get Bus Quote
                   <ArrowRight className="ml-2 h-4 w-4" />

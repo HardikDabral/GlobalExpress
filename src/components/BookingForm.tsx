@@ -13,9 +13,29 @@ export function BookingForm() {
   const { destinations, setSelectedDestination, setSelectedSeats, selectedDestination, selectedSeats } = useBusBooking();
   const [localDestination, setLocalDestination] = useState(selectedDestination);
   const [localSeats, setLocalSeats] = useState(selectedSeats);
+  const [errors, setErrors] = useState<{destination?: string; seats?: string}>({});
 
   const handleViewPricing = () => {
-    if (!localDestination || localSeats < 1 || localSeats > 10) return;
+    const newErrors: {destination?: string; seats?: string} = {};
+    
+    // Validate destination
+    if (!localDestination) {
+      newErrors.destination = "Please select a destination";
+    }
+    
+    // Validate seats
+    if (!localSeats || localSeats < 1) {
+      newErrors.seats = "Please enter at least 1 seat";
+    } else if (localSeats > 10) {
+      newErrors.seats = "Maximum 10 seats allowed";
+    }
+    
+    setErrors(newErrors);
+    
+    // If there are errors, don't proceed
+    if (Object.keys(newErrors).length > 0) {
+      return;
+    }
     
     setSelectedDestination(localDestination);
     setSelectedSeats(localSeats);
@@ -55,8 +75,13 @@ export function BookingForm() {
               <MapPin className="h-5 w-5 mr-3 text-primary" />
               Select Destination
             </label>
-            <Select value={localDestination} onValueChange={setLocalDestination}>
-              <SelectTrigger className="h-14 bg-muted border-0 text-foreground rounded-2xl text-lg hover:bg-muted/80 transition-all">
+            <Select value={localDestination} onValueChange={(value) => {
+              setLocalDestination(value);
+              if (errors.destination) {
+                setErrors(prev => ({ ...prev, destination: undefined }));
+              }
+            }}>
+              <SelectTrigger className={`h-14 bg-muted border-0 text-foreground rounded-2xl text-lg hover:bg-muted/80 transition-all ${errors.destination ? 'border-red-500 border-2' : ''}`}>
                 <SelectValue placeholder="Choose your premium route" />
               </SelectTrigger>
               <SelectContent className="rounded-2xl">
@@ -67,6 +92,9 @@ export function BookingForm() {
                 ))}
               </SelectContent>
             </Select>
+            {errors.destination && (
+              <p className="text-red-500 text-sm mt-2 ml-1">{errors.destination}</p>
+            )}
           </motion.div>
 
           <motion.div
@@ -83,11 +111,21 @@ export function BookingForm() {
               min="1"
               max="10"
               value={localSeats}
-              onChange={(e) => setLocalSeats(Number(e.target.value))}
-              className="h-14 bg-muted border-0 text-foreground rounded-2xl text-lg placeholder:text-muted-foreground hover:bg-muted/80 transition-all"
+              onChange={(e) => {
+                const value = Number(e.target.value);
+                setLocalSeats(value);
+                if (errors.seats) {
+                  setErrors(prev => ({ ...prev, seats: undefined }));
+                }
+              }}
+              className={`h-14 bg-muted border-0 text-foreground rounded-2xl text-lg placeholder:text-muted-foreground hover:bg-muted/80 transition-all ${errors.seats ? 'border-red-500 border-2' : ''}`}
               placeholder="Enter number of seats"
             />
-            <p className="text-muted-foreground text-sm mt-2 ml-1">Maximum 10 seats per booking</p>
+            {errors.seats ? (
+              <p className="text-red-500 text-sm mt-2 ml-1">{errors.seats}</p>
+            ) : (
+              <p className="text-muted-foreground text-sm mt-2 ml-1">Maximum 10 seats per booking</p>
+            )}
           </motion.div>
 
           <motion.div
@@ -97,8 +135,7 @@ export function BookingForm() {
           >
             <Button 
               onClick={handleViewPricing}
-              disabled={!localDestination || localSeats < 1 || localSeats > 10}
-              className="w-full h-16 bg-gradient-primary text-white hover:shadow-premium-lg hover:scale-105 font-bold text-lg rounded-2xl transition-all duration-300 disabled:opacity-50 disabled:hover:scale-100"
+              className="w-full h-16 bg-gradient-primary text-white hover:shadow-premium-lg hover:scale-105 font-bold text-lg rounded-2xl transition-all duration-300"
               size="lg"
             >
               View Premium Pricing

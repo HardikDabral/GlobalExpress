@@ -40,13 +40,26 @@ export function SeatGrid({ busId, onSeatSelectionChange }: SeatGridProps) {
     const status = getSeatStatus(seatNumber);
     const baseClass = 'w-7 h-7 md:w-9 md:h-9 rounded-lg font-medium text-xs transition-all duration-300 cursor-pointer flex items-center justify-center';
     
+    // Check if seat is reserved for special categories
+    const isWomenReserved = seatNumber >= 1 && seatNumber <= 4;
+    const isDisabledReserved = seatNumber >= 5 && seatNumber <= 8;
+    const isSeniorReserved = seatNumber >= 9 && seatNumber <= 12;
+    
     switch (status) {
       case 'booked':
         return `${baseClass} bg-gray-200 text-gray-400 cursor-not-allowed`;
       case 'selected':
         return `${baseClass} bg-forest-dark text-white scale-110`;
       case 'available':
-        return `${baseClass} bg-forest-lighter text-forest-dark hover:bg-forest-light hover:text-white hover:scale-105`;
+        if (isWomenReserved) {
+          return `${baseClass} bg-pink-100 text-pink-700 border border-pink-200 hover:bg-pink-200 hover:text-pink-800 hover:scale-105`;
+        } else if (isDisabledReserved) {
+          return `${baseClass} bg-blue-100 text-blue-700 border border-blue-200 hover:bg-blue-200 hover:text-blue-800 hover:scale-105`;
+        } else if (isSeniorReserved) {
+          return `${baseClass} bg-orange-100 text-orange-700 border border-orange-200 hover:bg-orange-200 hover:text-orange-800 hover:scale-105`;
+        } else {
+          return `${baseClass} bg-forest-lighter text-forest-dark hover:bg-forest-light hover:text-white hover:scale-105`;
+        }
     }
   };
 
@@ -101,15 +114,48 @@ export function SeatGrid({ busId, onSeatSelectionChange }: SeatGridProps) {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="mb-8"
+          className="mb-6"
         >
           <div className="bg-forest/5 rounded-xl p-2 md:p-3 text-center text-xs md:text-sm font-medium text-forest">
             Driver Section
           </div>
         </motion.div>
 
+        {/* Reserved Seats Information */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="mb-6"
+        >
+          <div className="bg-gradient-to-r from-forest/5 to-forest-lighter/5 rounded-xl p-4 border border-forest/10">
+            <h4 className="text-sm font-semibold text-forest-dark mb-3 flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-forest"></div>
+              Reserved Seats Information
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-pink-200 border border-pink-300 rounded"></div>
+                <span className="text-forest-dark/70">Seats 1-4: Women Reserved</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-blue-200 border border-blue-300 rounded"></div>
+                <span className="text-forest-dark/70">Seats 5-8: Disabled Reserved</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-orange-200 border border-orange-300 rounded"></div>
+                <span className="text-forest-dark/70">Seats 9-12: Senior Citizens</span>
+              </div>
+            </div>
+            <p className="text-forest/60 text-xs mt-3 leading-relaxed">
+              These seats are reserved for specific categories as per government regulations. 
+              General passengers can book these seats if not occupied by reserved category passengers.
+            </p>
+          </div>
+        </motion.div>
+
         {/* Seat grid */}
-        <div className="space-y-2 md:space-y-3 mb-8">
+        <div className="space-y-3 md:space-y-4 mb-8">
           {seatRows.map((row, rowIndex) => (
             <motion.div
               key={rowIndex}
@@ -119,7 +165,7 @@ export function SeatGrid({ busId, onSeatSelectionChange }: SeatGridProps) {
               className="flex justify-between items-center"
             >
               {/* Left side (2 seats) */}
-              <div className="flex gap-3">
+              <div className="flex gap-4 md:gap-5">
                 {row.slice(0, 2).map(seatNumber => (
                   <motion.div
                     key={seatNumber}
@@ -139,12 +185,12 @@ export function SeatGrid({ busId, onSeatSelectionChange }: SeatGridProps) {
               </div>
               
               {/* Aisle */}
-              <div className="w-6 md:w-8 text-center text-forest/30 font-medium text-xs">
+              <div className="w-8 md:w-12 text-center text-forest/30 font-medium text-xs">
                 ···
               </div>
               
               {/* Right side (2 seats) */}
-              <div className="flex gap-3">
+              <div className="flex gap-4 md:gap-5">
                 {row.slice(2).map(seatNumber => (
                   <motion.div
                     key={seatNumber}
@@ -171,7 +217,7 @@ export function SeatGrid({ busId, onSeatSelectionChange }: SeatGridProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.8 }}
-          className="flex justify-between items-center bg-forest/5 p-4 md:p-6 rounded-xl border border-forest/10"
+          className="flex justify-between items-center bg-forest/5 p-4 md:p-6 rounded-xl border border-forest/10 mb-6"
         >
           <div>
             <p className="font-medium text-forest-dark">
@@ -184,14 +230,66 @@ export function SeatGrid({ busId, onSeatSelectionChange }: SeatGridProps) {
             )}
           </div>
           <Badge 
-            className={`px-3 py-1.5 text-xs font-medium rounded-full ${
+            className={`px-3 py-1.5 text-xs font-medium rounded-full hover:bg-forest/20 hover:text-white transition-colors ${
               selectedSeatNumbers.length === selectedSeats 
-                ? "bg-forest text-white" 
+                ? "bg-forest text-white hover:bg-forest-dark" 
                 : "bg-forest/10 text-forest"
             }`}
           >
             {selectedSeatNumbers.length === selectedSeats ? "Ready to book" : `Select ${selectedSeats - selectedSeatNumbers.length} more`}
           </Badge>
+        </motion.div>
+
+        {/* Additional Information */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.9 }}
+          className="space-y-4"
+        >
+          <div className="bg-gradient-to-r from-forest/5 to-forest-lighter/5 rounded-xl p-4 border border-forest/10">
+            <h4 className="text-sm font-semibold text-forest-dark mb-3 flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-forest"></div>
+              Seat Selection Guidelines
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-forest-dark/70">
+              <div className="space-y-2">
+                <p className="font-medium">• Choose seats in the same row for group travel</p>
+                <p className="font-medium">• Window seats offer better views and comfort</p>
+                <p className="font-medium">• Aisle seats provide easier access to restroom</p>
+              </div>
+              <div className="space-y-2">
+                <p className="font-medium">• Front seats have less legroom but better views</p>
+                <p className="font-medium">• Back seats may have more engine noise</p>
+                <p className="font-medium">• Middle seats offer balanced comfort</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-r from-forest/5 to-forest-lighter/5 rounded-xl p-4 border border-forest/10">
+            <h4 className="text-sm font-semibold text-forest-dark mb-3 flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-forest"></div>
+              Bus Amenities
+            </h4>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-forest"></div>
+                <span className="text-forest-dark/70">AC Available</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-forest"></div>
+                <span className="text-forest-dark/70">WiFi Free</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-forest"></div>
+                <span className="text-forest-dark/70">Charging Points</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-forest"></div>
+                <span className="text-forest-dark/70">Water Bottle</span>
+              </div>
+            </div>
+          </div>
         </motion.div>
         </div>
       </Card>
