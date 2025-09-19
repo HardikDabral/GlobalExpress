@@ -137,7 +137,7 @@ export function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps) {
               <div>
                 <Label htmlFor="name" className="flex items-center text-foreground font-semibold mb-3">
                   <User className="h-5 w-5 mr-3 text-forest" />
-                  Full Name
+                  Name
                 </Label>
                 <Input
                   id="name"
