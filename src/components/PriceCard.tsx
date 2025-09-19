@@ -65,7 +65,7 @@ export function PriceCard({ platform, price, isPopular, onSelect }: PriceCardPro
     >
       <Card className="relative p-6 bg-white border border-gray-100 hover:border-forest/20 transition-all duration-500 cursor-pointer group rounded-2xl">
         {isPopular && (
-          <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-forest/10 text-forest text-xs border-0 px-3 py-1 rounded-full font-medium hidden md:block">
+          <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-forest/10 text-forest text-xs border-0 px-3 py-1 rounded-full font-medium hidden lg:block">
             Most Popular
           </Badge>
         )}
