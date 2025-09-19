@@ -66,11 +66,11 @@ export function HeroSection() {
   };
 
   return (
-    <div className="relative">
+    <div className="relative bg-white">
       <section className="h-[500px] md:h-[500px] lg:h-[600px] flex max-w-[1440px] mx-auto items-center justify-center relative pb-16">
         {/* Background Image */}
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-b-3xl"
           style={{ backgroundImage: `url(${heroBg})` }}
         >
           <div className="absolute inset-0 bg-black/40 rounded-3xl"></div>
