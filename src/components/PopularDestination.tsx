@@ -78,15 +78,15 @@ const PopularDestination = () => {
 
         <Swiper
           modules={[Pagination, Autoplay]}
-          spaceBetween={20}
+          spaceBetween={16}
           slidesPerView={1}
           pagination={{ clickable: true }}
           autoplay={{
-            delay: 5000,
+            delay: 6000,
             disableOnInteraction: true,
             pauseOnMouseEnter: true,
           }}
-          speed={800}
+          speed={600}
           breakpoints={{
             640: {
               slidesPerView: 2,
@@ -106,7 +106,8 @@ const PopularDestination = () => {
           {destinations.map((destination) => (
             <SwiperSlide key={destination.id}>
               <Card className="group overflow-hidden bg-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border-0 gpu-accelerated will-change-transform">
-                <div className="relative h-48 overflow-hidden">
+                {/* Desktop Image */}
+                <div className="relative h-48 overflow-hidden hidden md:block">
                   <img
                     src={destination.image}
                     alt={destination.name}
@@ -128,15 +129,27 @@ const PopularDestination = () => {
                     <p className="text-white/90 text-sm">{destination.description}</p>
                   </div>
                 </div>
+
+                {/* Mobile Header - No Image */}
+                <div className="md:hidden p-6 pb-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-xl font-bold text-gray-900">{destination.name}</h3>
+                    <div className="flex items-center bg-forest/10 rounded-full px-3 py-1">
+                      <Star className="h-4 w-4 text-forest fill-current mr-1" />
+                      <span className="text-sm font-semibold text-forest">{destination.rating}</span>
+                    </div>
+                  </div>
+                  <p className="text-gray-600 text-sm mb-3">{destination.description}</p>
+                </div>
                 
-                <div className="p-6">
+                <div className="p-6 md:pt-6 pt-0">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center text-muted-foreground">
                       <Clock className="h-4 w-4 mr-2" />
                       <span className="text-sm">{destination.duration}</span>
                     </div>
                     <div className="text-right">
-                      <p className="text-2xl font-bold text-forest">{destination.price}</p>
+                      <p className="text-2xl font-bold text-green-700">{destination.price}</p>
                       <p className="text-xs text-muted-foreground">per seat</p>
                     </div>
                   </div>
