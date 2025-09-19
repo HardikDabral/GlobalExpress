@@ -146,7 +146,7 @@ export default function Success() {
                     <Users className="h-5 w-5 text-forest" />
                   </div>
                   <div>
-                    <p className="font-medium text-forest-dark">Seats</p>
+                    <p className="font-medium text-forest-dark">Seat No.</p>
                     <p className="text-forest-dark/60">
                       {latestBooking.seats.length} seat{latestBooking.seats.length > 1 ? 's' : ''}: {latestBooking.seats.join(', ')}
                     </p>
