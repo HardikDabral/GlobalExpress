@@ -46,7 +46,7 @@ export function PopupForm({ isOpen, onClose, defaultDestination }: PopupFormProp
         <>
           {/* Backdrop */}
           <div 
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
             onClick={onClose}
           />
 
@@ -55,7 +55,7 @@ export function PopupForm({ isOpen, onClose, defaultDestination }: PopupFormProp
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="fixed inset-0 flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 flex items-center justify-center z-[100] p-4"
           >
             <div 
               className="relative bg-white rounded-3xl p-6 md:p-8 shadow-2xl w-full max-w-2xl mx-auto"

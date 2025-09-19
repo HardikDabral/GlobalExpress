@@ -64,20 +64,19 @@ export function PriceCard({ platform, price, isPopular, onSelect }: PriceCardPro
       className="relative"
     >
       <Card className="relative p-6 bg-white border border-gray-100 hover:border-forest/20 transition-all duration-500 cursor-pointer group rounded-2xl">
-        {/* Background decoration */}
-        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,black_70%,transparent_100%)] opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
-        
         {isPopular && (
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", delay: 0.3 }}
           >
-            <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-forest/10 text-forest text-xs border-0 px-3 py-1 rounded-full font-medium">
+            <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-forest/10 text-forest text-xs border-0 px-3 py-1 rounded-full font-medium hidden md:block">
               Most Popular
             </Badge>
           </motion.div>
         )}
+        {/* Background decoration */}
+        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,black_70%,transparent_100%)] opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
         
         <div className="relative z-10">
           <div className="text-center mb-6">
@@ -110,7 +109,7 @@ export function PriceCard({ platform, price, isPopular, onSelect }: PriceCardPro
               className="w-full h-10 bg-white text-forest border border-forest/20 hover:bg-forest hover:text-white font-medium text-sm rounded-xl transition-all duration-300"
               size="lg"
             >
-              Try For Free
+              Book Now
             </Button>
           </motion.div>
         </div>

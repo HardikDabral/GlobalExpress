@@ -82,7 +82,7 @@ const OurServices = () => {
         </div>
         </div>
         <div className="overflow-hidden py-6 bg-white/80 backdrop-blur-md border-y border-gray-100">
-          <div className="flex animate-marquee whitespace-nowrap">
+          <div className="flex animate-marquee-mobile md:animate-marquee whitespace-nowrap">
             {[...services, ...services, ...services, ...services].map((service, index) => (
               <div
                 key={index}

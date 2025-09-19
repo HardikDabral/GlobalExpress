@@ -38,24 +38,24 @@ export function SeatGrid({ busId, onSeatSelectionChange }: SeatGridProps) {
 
   const getSeatClass = (seatNumber: number) => {
     const status = getSeatStatus(seatNumber);
-    const baseClass = 'w-12 h-12 rounded-2xl font-bold text-sm transition-all duration-300 cursor-pointer flex items-center justify-center';
+    const baseClass = 'w-7 h-7 md:w-9 md:h-9 rounded-lg font-medium text-xs transition-all duration-300 cursor-pointer flex items-center justify-center';
     
     switch (status) {
       case 'booked':
-        return `${baseClass} bg-seatBooked text-white cursor-not-allowed opacity-60`;
+        return `${baseClass} bg-gray-200 text-gray-400 cursor-not-allowed`;
       case 'selected':
-        return `${baseClass} bg-gradient-primary text-white shadow-premium-md scale-110 ring-2 ring-primary-light`;
+        return `${baseClass} bg-forest-dark text-white scale-110`;
       case 'available':
-        return `${baseClass} bg-seatAvailable hover:bg-seatAvailable/80 text-white hover:scale-105 hover:shadow-premium-sm`;
+        return `${baseClass} bg-forest-lighter text-forest-dark hover:bg-forest-light hover:text-white hover:scale-105`;
     }
   };
 
-  // Generate seat layout (6 rows x 6 seats = 36 seats total) - Indian bus format (3+3)
+  // Generate seat layout (15 rows x 4 seats = 60 seats total) - Indian bus format (2+2)
   const seatRows = [];
-  for (let row = 0; row < 6; row++) {
+  for (let row = 0; row < 15; row++) {
     const rowSeats = [];
-    for (let col = 0; col < 6; col++) {
-      const seatNumber = row * 6 + col + 1;
+    for (let col = 0; col < 4; col++) {
+      const seatNumber = row * 4 + col + 1;
       rowSeats.push(seatNumber);
     }
     seatRows.push(rowSeats);
@@ -67,26 +67,30 @@ export function SeatGrid({ busId, onSeatSelectionChange }: SeatGridProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
-      <Card className="p-8 bg-gradient-card shadow-premium-xl border-0 rounded-3xl">
+      <Card className="p-4 md:p-6 bg-white border border-gray-100 rounded-2xl relative">
+        {/* Decorative Background */}
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,black_70%,transparent_100%)] opacity-50"></div>
+        <div className="relative z-10">
         <div className="mb-8">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <h3 className="text-3xl font-bold mb-4 text-foreground">{bus.name}</h3>
-            <div className="flex flex-wrap gap-6 text-lg">
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 bg-seatAvailable rounded-xl shadow-sm"></div>
-                <span className="font-medium text-foreground">Available</span>
+            <span className="text-forest/60 font-medium text-sm">SELECT SEATS</span>
+            <h3 className="text-xl md:text-2xl font-bold mt-2 mb-4 text-forest-dark">{bus.name}</h3>
+            <div className="flex flex-wrap gap-4 text-xs md:text-sm">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 md:w-4 md:h-4 bg-forest-lighter rounded-lg"></div>
+                <span className="font-medium text-forest-dark/70">Available</span>
               </div>
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 bg-gradient-primary rounded-xl shadow-sm"></div>
-                <span className="font-medium text-foreground">Selected</span>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 md:w-4 md:h-4 bg-forest-dark rounded-lg"></div>
+                <span className="font-medium text-forest-dark/70">Selected</span>
               </div>
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 bg-seatBooked rounded-xl shadow-sm opacity-60"></div>
-                <span className="font-medium text-foreground">Booked</span>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 md:w-4 md:h-4 bg-gray-200 rounded-lg"></div>
+                <span className="font-medium text-forest-dark/70">Booked</span>
               </div>
             </div>
           </motion.div>
@@ -99,13 +103,13 @@ export function SeatGrid({ busId, onSeatSelectionChange }: SeatGridProps) {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="mb-8"
         >
-          <div className="bg-gradient-secondary rounded-2xl p-4 text-center text-lg font-bold text-white shadow-premium-md">
-            🚗 Driver Section
+          <div className="bg-forest/5 rounded-xl p-2 md:p-3 text-center text-xs md:text-sm font-medium text-forest">
+            Driver Section
           </div>
         </motion.div>
 
         {/* Seat grid */}
-        <div className="space-y-4 mb-8">
+        <div className="space-y-2 md:space-y-3 mb-8">
           {seatRows.map((row, rowIndex) => (
             <motion.div
               key={rowIndex}
@@ -114,8 +118,9 @@ export function SeatGrid({ busId, onSeatSelectionChange }: SeatGridProps) {
               transition={{ duration: 0.4, delay: 0.4 + rowIndex * 0.1 }}
               className="flex justify-between items-center"
             >
+              {/* Left side (2 seats) */}
               <div className="flex gap-3">
-                {row.slice(0, 3).map(seatNumber => (
+                {row.slice(0, 2).map(seatNumber => (
                   <motion.div
                     key={seatNumber}
                     whileHover={{ scale: getSeatStatus(seatNumber) === 'available' ? 1.1 : 1 }}
@@ -134,12 +139,13 @@ export function SeatGrid({ busId, onSeatSelectionChange }: SeatGridProps) {
               </div>
               
               {/* Aisle */}
-              <div className="w-12 text-center text-muted-foreground font-medium">
-                —
+              <div className="w-6 md:w-8 text-center text-forest/30 font-medium text-xs">
+                ···
               </div>
               
+              {/* Right side (2 seats) */}
               <div className="flex gap-3">
-                {row.slice(3).map(seatNumber => (
+                {row.slice(2).map(seatNumber => (
                   <motion.div
                     key={seatNumber}
                     whileHover={{ scale: getSeatStatus(seatNumber) === 'available' ? 1.1 : 1 }}
@@ -165,25 +171,29 @@ export function SeatGrid({ busId, onSeatSelectionChange }: SeatGridProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.8 }}
-          className="flex justify-between items-center bg-primary/10 p-6 rounded-2xl"
+          className="flex justify-between items-center bg-forest/5 p-4 md:p-6 rounded-xl border border-forest/10"
         >
           <div>
-            <p className="font-bold text-lg text-foreground">
-              Selected: {selectedSeatNumbers.length} / {selectedSeats} seats
+            <p className="font-medium text-forest-dark">
+              Selected: <span className="font-bold text-forest">{selectedSeatNumbers.length} / {selectedSeats}</span> seats
             </p>
             {selectedSeatNumbers.length > 0 && (
-              <p className="text-muted-foreground mt-1">
+              <p className="text-forest/60 text-sm mt-1">
                 Seats: {selectedSeatNumbers.sort((a, b) => a - b).join(', ')}
               </p>
             )}
           </div>
           <Badge 
-            variant={selectedSeatNumbers.length === selectedSeats ? "default" : "secondary"}
-            className="px-4 py-2 text-sm font-bold rounded-xl"
+            className={`px-3 py-1.5 text-xs font-medium rounded-full ${
+              selectedSeatNumbers.length === selectedSeats 
+                ? "bg-forest text-white" 
+                : "bg-forest/10 text-forest"
+            }`}
           >
-            {selectedSeatNumbers.length === selectedSeats ? "Ready to book" : "Select more seats"}
+            {selectedSeatNumbers.length === selectedSeats ? "Ready to book" : `Select ${selectedSeats - selectedSeatNumbers.length} more`}
           </Badge>
         </motion.div>
+        </div>
       </Card>
     </motion.div>
   );

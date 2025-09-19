@@ -4,6 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, MapPin, Users } from 'lucide-react';
 import { useBusBooking } from '@/hooks/useBusBooking';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 export default function Pricing() {
   const navigate = useNavigate();
@@ -46,36 +50,44 @@ export default function Pricing() {
       {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-6 text-forest/70">
-            <Button 
-              variant="ghost" 
-              onClick={() => navigate('/')}
-              className="text-forest hover:text-forest-dark hover:bg-forest/5"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Search
-            </Button>
+          <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6 text-forest/70">
+            {/* First Row: Back to Search + Total */}
+            <div className="flex items-center justify-between w-full md:w-auto gap-4 md:gap-6">
+              <Button 
+                variant="ghost" 
+                onClick={() => navigate('/')}
+                className="text-forest hover:text-forest-dark hover:bg-forest/5 -ml-3"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Search
+              </Button>
 
-            <div className="h-5 w-px bg-forest/20"></div>
-            
-            {/* <h1 className="text-xl font-bold text-forest-dark">Compare Prices</h1> */}
-            
-            {/* <div className="h-5 w-px bg-forest/20"></div> */}
-
-            <div className="flex items-center gap-2">
-              <MapPin className="h-5 w-5" />
-              {selectedDestination}
+              <Badge className="bg-forest/10 text-forest hover:bg-forest/20 transition-colors py-1.5 px-3 whitespace-nowrap md:hidden">
+                Total: {selectedSeats} × Price per seat
+              </Badge>
             </div>
 
-            <div className="h-5 w-px bg-forest/20"></div>
+            {/* Divider - Only visible on desktop */}
+            <div className="hidden md:block h-5 w-px bg-forest/20"></div>
 
-            <div className="flex items-center gap-2">
-              <Users className="h-5 w-5" />
-              {selectedSeats} seat{selectedSeats > 1 ? 's' : ''}
-            </div>
+            {/* Second Row: Route + Seats (+ Total on desktop) */}
+            <div className="flex items-center gap-2 text-sm overflow-x-auto no-scrollbar">
+              <div className="flex items-center gap-2 whitespace-nowrap">
+                <MapPin className="h-4 w-4 shrink-0" />
+                {selectedDestination}
+              </div>
 
-            <div className="ml-auto">
-              <Badge className="bg-forest/10 text-forest hover:bg-forest/20 transition-colors py-2 px-4">
+              <div className="h-4 w-px bg-forest/20"></div>
+
+              <div className="flex items-center gap-2 whitespace-nowrap">
+                <Users className="h-4 w-4 shrink-0" />
+                {selectedSeats} seat{selectedSeats > 1 ? 's' : ''}
+              </div>
+
+              {/* Total - Only visible on desktop */}
+              <div className="hidden md:block h-4 w-px bg-forest/20"></div>
+
+              <Badge className="hidden md:block bg-forest/10 text-forest hover:bg-forest/20 transition-colors py-1.5 px-3 whitespace-nowrap">
                 Total: {selectedSeats} × Price per seat
               </Badge>
             </div>
@@ -92,16 +104,54 @@ export default function Pricing() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 container mx-auto px-4">
-          {platforms.map((platform) => (
-            <PriceCard
-              key={platform.key}
-              platform={platform.key}
-              price={currentPricing.prices[platform.key as keyof typeof currentPricing.prices]}
-              isPopular={platform.isPopular}
-              onSelect={() => handlePlatformSelect(platform.key)}
-            />
-          ))}
+        <div className="container mx-auto px-4">
+          {/* Mobile/Tablet Swiper */}
+          <div className="lg:hidden">
+            <Swiper
+              modules={[Autoplay, Pagination]}
+              spaceBetween={16}
+              slidesPerView={1}
+              breakpoints={{
+                640: { slidesPerView: 2 }
+              }}
+              pagination={{
+                clickable: true,
+                bulletActiveClass: 'bg-forest',
+                bulletClass: 'swiper-pagination-bullet !bg-forest/20 !opacity-100'
+              }}
+              autoplay={{
+                delay: 3000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true
+              }}
+              loop={true}
+              className="pb-10"
+            >
+              {platforms.map((platform) => (
+                <SwiperSlide key={platform.key}>
+                  <PriceCard
+                    platform={platform.key}
+                    price={currentPricing.prices[platform.key as keyof typeof currentPricing.prices]}
+                    isPopular={platform.isPopular}
+                    onSelect={() => handlePlatformSelect(platform.key)}
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+
+          {/* Desktop Grid */}
+          <div className="hidden lg:grid grid-cols-4 gap-4">
+            {platforms.map((platform) => (
+              <PriceCard
+                key={platform.key}
+                platform={platform.key}
+                price={currentPricing.prices[platform.key as keyof typeof currentPricing.prices]}
+                isPopular={platform.isPopular}
+                onSelect={() => handlePlatformSelect(platform.key)}
+              />
+            ))}
+          </div>
         </div>
 
         <div className="text-center mt-16 max-w-2xl mx-auto">

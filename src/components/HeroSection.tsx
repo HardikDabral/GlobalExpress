@@ -8,14 +8,16 @@ import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { useBusBooking } from '@/hooks/useBusBooking';
+import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import heroBg from "../../public/images/herosection4.webp"
-import googleIcon from "../../public/images/google.svg"
-import trustPilotIcon from "../../public/images/trust-pilot.svg"
+import heroBg from "../../public/images/herosection4.webp";
+import googleIcon from "../../public/images/google.svg";
+import trustPilotIcon from "../../public/images/trust-pilot.svg";
 
 export function HeroSection() {
   const navigate = useNavigate();
+  const { user, setShowLogin } = useAuth();
   const { destinations, setSelectedDestination, setSelectedSeats, selectedDestination, selectedSeats, selectedDateTime, setSelectedDateTime } = useBusBooking();
   const [localDestination, setLocalDestination] = useState(selectedDestination);
   const [localSeats, setLocalSeats] = useState<number | ''>(selectedSeats);
@@ -28,6 +30,12 @@ export function HeroSection() {
 
   const handleViewPricing = () => {
     if (!localDestination || !localSeats || typeof localSeats !== 'number' || localSeats < 1 || localSeats > 10 || !date) return;
+    
+    // Check if user is logged in
+    if (!user) {
+      setShowLogin(true);
+      return;
+    }
     
     const dateTime = date ? `${format(date, 'yyyy-MM-dd')}T${time}` : '';
     setSelectedDestination(localDestination);
@@ -111,15 +119,15 @@ export function HeroSection() {
         </div>
       </section>
 
-      {/* Booking Form - Half in hero, half out */}
+      {/* Booking Form */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.6 }}
-        className="absolute left-0 right-0 -bottom-[250px] md:bottom-0 md:translate-y-1/2 z-20"
+        className="relative -mt-16 md:-mt-24"
       >
         <div className="container mx-auto px-6 max-w-[1440px]">
-          <div className="bg-white rounded-3xl p-8 md:p-10 shadow-2xl max-w-6xl mx-auto">
+          <div className="bg-white rounded-3xl p-8 md:p-10 border border-gray-100 max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8 items-end">
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -210,7 +218,7 @@ export function HeroSection() {
             <div>
               <Button 
                 onClick={handleViewPricing}
-                disabled={!localDestination || !localSeats || typeof localSeats !== 'number' || localSeats < 1 || localSeats > 10}
+                disabled={!localDestination || !localSeats || typeof localSeats !== 'number' || localSeats < 1 || localSeats > 10 || !date || !time}
                 className="w-full h-12 bg-forest hover:bg-forest-dark text-white font-semibold rounded-xl transition-all duration-300 disabled:opacity-50 relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-transparent after:via-white/20 after:to-transparent after:animate-shimmer after:duration-1000"
               >
                 Get Bus Quote
@@ -221,9 +229,6 @@ export function HeroSection() {
           </div>
         </div>
       </motion.div>
-      
-      {/* Spacer to account for the overlapping form */}
-      <div className="h-16"></div>
     </div>
   );
 }

@@ -1,24 +1,15 @@
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Bus, LogIn, Settings, Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
 import { LoginModal } from '@/components/LoginModal';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 export function Layout({ children }: LayoutProps) {
-  const [showLogin, setShowLogin] = useState(false);
-  const [user, setUser] = useState<any>(null);
-
-  const handleLogin = (userType: 'user' | 'admin', userData?: any) => {
-    setUser({ ...userData, userType });
-  };
-
-  const handleLogout = () => {
-    setUser(null);
-  };
+  const { user, showLogin, setShowLogin, handleLogin, handleLogout } = useAuth();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-forest-lighter/10">
@@ -27,36 +18,33 @@ export function Layout({ children }: LayoutProps) {
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <Bus className="h-8 w-8 text-forest" />
-            <span className="text-2xl font-bold bg-gradient-to-r from-forest via-forest-light to-forest-lighter text-transparent bg-clip-text">ExpressTravel</span>
+            <span className="text-2xl font-bold bg-gradient-to-r from-forest via-forest-light to-forest-lighter text-transparent bg-clip-text">
+              <span className="md:hidden">ET</span>
+              <span className="hidden md:inline">ExpressTravel</span>
+            </span>
           </Link>
           {user ? (
-            <div className="flex items-center space-x-4">
-              <div className="text-right">
-                <p className="font-semibold">{user.name}</p>
-                <p className="text-sm text-muted-foreground capitalize">{user.userType}</p>
-              </div>
-              <div className="flex space-x-2">
-                {user.userType === 'admin' && (
-                  <Link to="/admin">
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  className="text-forest hover:text-forest-dark border-forest/20 hover:border-forest/40"
-                >
-                  <Settings className="h-4 w-4 mr-2" />
-                  Dashboard
-                </Button>
-                  </Link>
-                )}
-                <Button 
-                  onClick={handleLogout}
-                  variant="outline" 
-                  size="sm"
-                  className="text-forest hover:text-forest-dark border-forest/20 hover:border-forest/40"
-                >
-                  Logout
-                </Button>
-              </div>
+            <div className="flex items-center space-x-2">
+              {user.userType === 'admin' && (
+                <Link to="/admin">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="text-forest hover:text-forest-dark border-forest/20 hover:border-forest/40"
+                  >
+                    <Settings className="h-4 w-4 mr-2" />
+                    Dashboard
+                  </Button>
+                </Link>
+              )}
+              <Button 
+                onClick={handleLogout}
+                variant="outline" 
+                size="sm"
+                className="text-forest hover:text-forest-dark border-forest/20 hover:border-forest/40"
+              >
+                Logout
+              </Button>
             </div>
           ) : (
             <Button 
@@ -85,7 +73,10 @@ export function Layout({ children }: LayoutProps) {
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <Bus className="h-8 w-8 text-forest" />
-                <span className="text-2xl font-bold bg-gradient-to-r from-forest via-forest-light to-forest-lighter text-transparent bg-clip-text">ExpressTravel</span>
+                <span className="text-2xl font-bold bg-gradient-to-r from-forest via-forest-light to-forest-lighter text-transparent bg-clip-text">
+                  <span className="md:hidden">ET</span>
+                  <span className="hidden md:inline">ExpressTravel</span>
+                </span>
               </div>
               <p className="text-muted-foreground">
                 Your trusted partner for comfortable and safe bus travel across India.
